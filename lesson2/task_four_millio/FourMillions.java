@@ -1,6 +1,6 @@
-package pr1;
+//package pr1;
 
-//package ru.philosophyit;
+package ru.philosophyit;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
@@ -11,24 +11,24 @@ public class FourMillions {
 
 
   /**
-   * Класс-счётчик.
+   * ГЉГ«Г Г±Г±-Г±Г·ВёГІГ·ГЁГЄ.
    */
   static class Counter {
 
     /**
-     * Буфер счёта
+     * ГЃГіГґГҐГ° Г±Г·ВёГІГ 
      */
     private long count = 0;
 
     /**
-     * Считаем +1
+     * Г‘Г·ГЁГІГ ГҐГ¬ +1
      */
     public void increment() {
       count++;
     }
 
     /**
-     * Получить текущее значение счётчика
+     * ГЏГ®Г«ГіГ·ГЁГІГј ГІГҐГЄГіГ№ГҐГҐ Г§Г­Г Г·ГҐГ­ГЁГҐ Г±Г·ВёГІГ·ГЁГЄГ 
      */
     public long getCount() {
       return count;
@@ -38,41 +38,41 @@ public class FourMillions {
   private final static int N_THREADS = 4;
 
   /**
-   * Точка входа в программу
+   * Г’Г®Г·ГЄГ  ГўГµГ®Г¤Г  Гў ГЇГ°Г®ГЈГ°Г Г¬Г¬Гі
    *
-   * @param args арг-ты командной строки
+   * @param args Г Г°ГЈ-ГІГ» ГЄГ®Г¬Г Г­Г¤Г­Г®Г© Г±ГІГ°Г®ГЄГЁ
    */
   public static void main(String[] args) {
     Counter counter = new Counter();
 
     ExecutorService executorService = Executors.newFixedThreadPool(N_THREADS);
 
-    // создаём java.Util.Stream для интов щт 0 до 4 (искд.)
-    // * не путать Stream и Thread
+    // Г±Г®Г§Г¤Г ВёГ¬ java.Util.Stream Г¤Г«Гї ГЁГ­ГІГ®Гў Г№ГІ 0 Г¤Г® 4 (ГЁГ±ГЄГ¤.)
+    // * Г­ГҐ ГЇГіГІГ ГІГј Stream ГЁ Thread
     CompletableFuture<?>[] futures = IntStream.range(0, N_THREADS)
-        // вместо каждой цифры запускаем инкременты счётчика
+        // ГўГ¬ГҐГ±ГІГ® ГЄГ Г¦Г¤Г®Г© Г¶ГЁГґГ°Г» Г§Г ГЇГіГ±ГЄГ ГҐГ¬ ГЁГ­ГЄГ°ГҐГ¬ГҐГ­ГІГ» Г±Г·ВёГІГ·ГЁГЄГ 
        
     		 .mapToObj(ignored -> runCounting(counter, executorService))
-        // собираем CompletableFuture'ы в масси
+        // Г±Г®ГЎГЁГ°Г ГҐГ¬ CompletableFuture'Г» Гў Г¬Г Г±Г±ГЁ
         .toArray(CompletableFuture[]::new);
 
     ///System.out.println("Total count: " + counter.getCount());
     
-    // когда все потоки завершат свою работу
+    // ГЄГ®ГЈГ¤Г  ГўГ±ГҐ ГЇГ®ГІГ®ГЄГЁ Г§Г ГўГҐГ°ГёГ ГІ Г±ГўГ®Гѕ Г°Г ГЎГ®ГІГі
     CompletableFuture.allOf(futures).thenRun(() -> {
-      // имеем шанс не получить 4 млн
+      // ГЁГ¬ГҐГҐГ¬ ГёГ Г­Г± Г­ГҐ ГЇГ®Г«ГіГ·ГЁГІГј 4 Г¬Г«Г­
     	System.out.println("Total count: " + counter.getCount());
         executorService.shutdown();
     });
   }
 
   /**
-   * Запускает миллион инкрементов счётчика в отдельном потоке
+   * Г‡Г ГЇГіГ±ГЄГ ГҐГІ Г¬ГЁГ«Г«ГЁГ®Г­ ГЁГ­ГЄГ°ГҐГ¬ГҐГ­ГІГ®Гў Г±Г·ВёГІГ·ГЁГЄГ  Гў Г®ГІГ¤ГҐГ«ГјГ­Г®Г¬ ГЇГ®ГІГ®ГЄГҐ
    *
-   * @param counter         счётчик для инкрементов
-   * @param executorService пул потоков для работы
+   * @param counter         Г±Г·ВёГІГ·ГЁГЄ Г¤Г«Гї ГЁГ­ГЄГ°ГҐГ¬ГҐГ­ГІГ®Гў
+   * @param executorService ГЇГіГ« ГЇГ®ГІГ®ГЄГ®Гў Г¤Г«Гї Г°Г ГЎГ®ГІГ»
    *
-   * @return CompletableFuture без результата, разрешаемый после завершения инкрементаций
+   * @return CompletableFuture ГЎГҐГ§ Г°ГҐГ§ГіГ«ГјГІГ ГІГ , Г°Г Г§Г°ГҐГёГ ГҐГ¬Г»Г© ГЇГ®Г±Г«ГҐ Г§Г ГўГҐГ°ГёГҐГ­ГЁГї ГЁГ­ГЄГ°ГҐГ¬ГҐГ­ГІГ Г¶ГЁГ©
    */
   
   
