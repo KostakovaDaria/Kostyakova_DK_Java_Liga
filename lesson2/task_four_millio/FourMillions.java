@@ -1,98 +1,114 @@
-//package pr1;
-
 package ru.philosophyit;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.IntStream;
 
 public class FourMillions {
 
 
   /**
-   * Êëàññ-ñ÷¸ò÷èê.
+   * Класс-счётчик.
    */
   static class Counter {
 
     /**
-     * Áóôåð ñ÷¸òà
+     * Буфер счёта
      */
-    private long count = 0;
+  //  private long count = 0;
+    
+    private final AtomicLong count = new AtomicLong(0);
+    /**
+     * Считаем +1
+     */
+  //  public void increment() {
+  //    count++;
+  //  }
+    
+    public long increment() {
+        
+    	while(true)
+        {
+        	long count_old = getCount();
+        	long count_new = count_old+1;
+        	if(count.compareAndSet(count_old, count_new))
+        		return count_new;
+        	
+        }
+      }
 
     /**
-     * Ñ÷èòàåì +1
+     * Получить текущее значение счётчика
      */
-    public void increment() {
-      count++;
-    }
-
-    /**
-     * Ïîëó÷èòü òåêóùåå çíà÷åíèå ñ÷¸ò÷èêà
-     */
+  //  public long getCount() {
+  //    return count;
+  //  }
+    
     public long getCount() {
-      return count;
-    }
+        return count.get();
+      }
+    
   }
 
   private final static int N_THREADS = 4;
 
   /**
-   * Òî÷êà âõîäà â ïðîãðàììó
+   * Точка входа в программу
    *
-   * @param args àðã-òû êîìàíäíîé ñòðîêè
+   * @param args арг-ты командной строки
    */
   public static void main(String[] args) {
     Counter counter = new Counter();
 
     ExecutorService executorService = Executors.newFixedThreadPool(N_THREADS);
 
-    // ñîçäà¸ì java.Util.Stream äëÿ èíòîâ ùò 0 äî 4 (èñêä.)
-    // * íå ïóòàòü Stream è Thread
+    // создаём java.Util.Stream для интов щт 0 до 4 (искд.)
+    // * не путать Stream и Thread
     CompletableFuture<?>[] futures = IntStream.range(0, N_THREADS)
-        // âìåñòî êàæäîé öèôðû çàïóñêàåì èíêðåìåíòû ñ÷¸ò÷èêà
+        // вместо каждой цифры запускаем инкременты счётчика
        
     		 .mapToObj(ignored -> runCounting(counter, executorService))
-        // ñîáèðàåì CompletableFuture'û â ìàññè
+        // собираем CompletableFuture'ы в масси
         .toArray(CompletableFuture[]::new);
 
     ///System.out.println("Total count: " + counter.getCount());
     
-    // êîãäà âñå ïîòîêè çàâåðøàò ñâîþ ðàáîòó
+    // когда все потоки завершат свою работу
     CompletableFuture.allOf(futures).thenRun(() -> {
-      // èìååì øàíñ íå ïîëó÷èòü 4 ìëí
+      // имеем шанс не получить 4 млн
     	System.out.println("Total count: " + counter.getCount());
+    	
         executorService.shutdown();
     });
   }
 
   /**
-   * Çàïóñêàåò ìèëëèîí èíêðåìåíòîâ ñ÷¸ò÷èêà â îòäåëüíîì ïîòîêå
+   * Запускает миллион инкрементов счётчика в отдельном потоке
    *
-   * @param counter         ñ÷¸ò÷èê äëÿ èíêðåìåíòîâ
-   * @param executorService ïóë ïîòîêîâ äëÿ ðàáîòû
+   * @param counter         счётчик для инкрементов
+   * @param executorService пул потоков для работы
    *
-   * @return CompletableFuture áåç ðåçóëüòàòà, ðàçðåøàåìûé ïîñëå çàâåðøåíèÿ èíêðåìåíòàöèé
+   * @return CompletableFuture без результата, разрешаемый после завершения инкрементаций
    */
   
   
   private static CompletableFuture<?> runCounting(Counter counter, ExecutorService executorService) {
     
-	  try {  
-		  Thread.sleep(50);
-    
-    } catch (InterruptedException e) {}
+	
 	  
 	  return CompletableFuture.runAsync(
-		        () -> {
+		      
+			  () -> {
 		          for (int j = 0; j < 1000000; j++) {
 		            counter.increment();
+		           }
 		          
-		          }
-		        },
+			  },
 		        executorService
 		    );
-
+			  
        
   }
 }
