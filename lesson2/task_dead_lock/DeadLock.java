@@ -9,8 +9,7 @@ public class DeadLock {
  
   static class Friend {
     private final String name;
-    
-    
+        
     public Friend(String name) {
       this.name = name;
     }
@@ -21,44 +20,28 @@ public class DeadLock {
     
     public void bow(Friend bower) {
     	
-    	Friend first, second;
-    	if (getName().compareTo(bower.getName()) > 0)
-    	{
-    		first = this;
-    		second = bower;
-    	}
-    	else
-    	{
-    		first = bower;
-    		second = this;
-    	}
-    	
-    	synchronized(first)
-    	{	
-    		synchronized(second)
-    		{
+    			synchronized (this)
+    			{
         		 System.out.format("%s: %s подстрелил меня!\n", this.name, bower.getName());
         	     System.out.format("%s: стреляю в ответ!\n", this.name);
-        	  	    	 
-        	     this.bowBack(bower);
-    	}     
-    }
+        	  
+    		 }	
+   
+    			bower.bowBack(this);
     }
              
-    public void bowBack(Friend bower) 
+    public synchronized void bowBack(Friend bower) 
     {
-     	System.out.format("%s: %s подстрелил меня!\n", bower.name, this.getName());
+    		System.out.format("%s: %s подстрелил меня!\n", this.name, bower.getName());
     }
   }
-  
  
   public static void main(String[] args) {
-    Friend alphonse = new Friend("Alphonse");
-    Friend gaston = new Friend("Gaston");
+  Friend alphonse = new Friend("Alphonse");
+  Friend gaston = new Friend("Gaston");
    
     new Thread(() -> alphonse.bow(gaston)).start();
            
-    new Thread(() -> gaston.bow(alphonse)).start();
-  }
-    
+    new Thread(() -> gaston.bow(alphonse)).start(); 
+  }   
 }
