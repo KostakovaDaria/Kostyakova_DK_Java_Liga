@@ -4,7 +4,7 @@ public class Qube {
 
 	Square square;
 	
-    public Qube(double s) {
+    public Qube(Double s) {
         
     	//в конструкторе определяем базовые фигуры
     	square = new Square(s);
