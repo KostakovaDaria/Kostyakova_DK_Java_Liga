@@ -473,7 +473,7 @@ class UserControllerTest {
     }
 
     @Test
-    @Transactional(Transactional.TxType.REQUIRES_NEW)
+    @Transactional
     public void whenInputIsValidIdReturnsStatus200() throws Exception
     {
         RegistrationDomain registrationDomain = new RegistrationDomain();
