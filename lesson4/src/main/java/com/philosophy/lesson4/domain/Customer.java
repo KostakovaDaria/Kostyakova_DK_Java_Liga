@@ -1,15 +1,17 @@
 package com.philosophy.lesson4.domain;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.philosophy.lesson4.dao.Identified;
 
-public class Customer {
+@JsonAutoDetect
+public class Customer implements Identified<Integer> {
 
+    @JsonProperty("Id_Customer")
     private Integer Id;
 
-    @JsonProperty("Name_Customer")
     private String Name;
 
-    @JsonProperty("Email_Address")
     private String Email_Address;
 
     public Integer getId() {
@@ -22,9 +24,7 @@ public class Customer {
 
     public String getEmail_Address() { return Email_Address; }
 
-    public void setId(Integer id) {
-        Id = id;
-    }
+    public void setId(Integer id) { Id = id; }
 
     public void setName(String name) {
         Name = name;

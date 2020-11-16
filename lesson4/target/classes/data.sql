@@ -1,28 +1,28 @@
 INSERT INTO Customer(Name, Email_Address)
-VALUES ('HBH', 'HBJHB');
+VALUES ('Anton', 'Address1');
 INSERT INTO Customer(Name, Email_Address)
-VALUES ('GFDG', 'HBJHB');
+VALUES ('Andrey', 'Address2');
 INSERT INTO Customer(Name, Email_Address)
-VALUES ('RTRE', 'HBJHB');
+VALUES ('Ann', 'Address3');
 INSERT INTO Customer(Name, Email_Address)
-VALUES ('HGF', 'HBJHB');
+VALUES ('Olga', 'Address4');
 INSERT INTO Customer(Name, Email_Address)
-VALUES ('CBFG', 'HBJHB');
+VALUES ('Sveta', 'Address5');
 INSERT INTO Customer(Name, Email_Address)
-VALUES ('HDSFDG', 'HBJHB');
+VALUES ('Lena', 'Address6');
 INSERT INTO Customer(Name, Email_Address)
-VALUES ('HGHHGF', 'HBJHB');
+VALUES ('Natalya', 'Address7');
 INSERT INTO Customer(Name, Email_Address)
-VALUES ('SSERE', 'HBJHB');
+VALUES ('Dasha', 'Address8');
 INSERT INTO Customer(Name, Email_Address)
-VALUES ('LMKL', 'HBJHB');
+VALUES ('Igor', 'Address9');
 INSERT INTO Order_Customer(Customer_Id, Name, Price)
-VALUES ('1', 'KM', '676');
+VALUES ('1', 'Order1', '676');
 INSERT INTO Order_Customer(Customer_Id, Name, Price)
-VALUES ('2', 'KM', '676');
+VALUES ('2', 'Order2', '677');
 INSERT INTO Order_Customer(Customer_Id, Name, Price)
-VALUES ('3', 'KM', '676');
+VALUES ('3', 'Order3', '678');
 INSERT INTO Order_Customer(Customer_Id, Name, Price)
-VALUES ('4', 'KM', '676');
+VALUES ('4', 'Order4', '679');
 INSERT INTO Order_Customer(Customer_Id, Name, Price)
-VALUES ('5', 'KM', '676');
+VALUES ('5', 'Order5', '680');

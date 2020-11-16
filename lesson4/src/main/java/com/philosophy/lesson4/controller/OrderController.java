@@ -1,7 +1,7 @@
 package com.philosophy.lesson4.controller;
 
 import com.philosophy.lesson4.dao.PersistException;
-import com.philosophy.lesson4.domain.OrderDTO;
+import com.philosophy.lesson4.domain.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -17,15 +17,15 @@ public class OrderController {
      * Метод createOrder принемает JSON следующего вида:
      *
      *{
-     *    "Name":"{Наименование Заказа}",
-     *    "Price":{Стоимость Заказа},
+     *
+     *    "Name_Order":"{Наименование Заказа}",
+     *    "Price_Order":{Стоимость Заказа},
      *
      * "customer":
      *
      * {
-     *        "Name_Customer":"{Имя клиента}", если клиент не существует в БД генерируется исключение
-     *        "Email_Address":"{Адрес}"
-     *  }
+     *        "Id_Customer":"{Id клиента}", если клиент не существует в БД генерируется исключение
+     * }
      *
      * }
      *
@@ -38,8 +38,7 @@ public class OrderController {
 
     @RequestMapping(path = "/api/v1/order", method = RequestMethod.POST)
     @ResponseBody
-    public  ResponseEntity createOrder(@RequestBody OrderDTO order) throws PersistException {
-       orderService.CreateOrder(order);
-       return new ResponseEntity(order.getId(), HttpStatus.OK);
+    public ResponseEntity createOrder(@RequestBody Order order) throws PersistException {
+        return new ResponseEntity(orderService.CreateOrder(order), HttpStatus.OK);
     }
 }

@@ -2,6 +2,10 @@ package com.philosophy.lesson4.dao;
 
 public class PersistException extends Exception {
 
+    /**
+     * Класс Ошибок
+     */
+
     public PersistException() {
 
     }
